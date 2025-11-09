@@ -1,6 +1,5 @@
 from django_filters import rest_framework as filters
 
-from apps.pizza.models import DaysChoices, PizzaModel
 from apps.pizza.serializer import PizzaSerializer
 
 
