@@ -1,17 +1,16 @@
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.request import Request
 
-from apps.pizza.filter import filter_pizza
+from apps.pizza.filter import PizzaFilter
 from apps.pizza.models import PizzaModel
-from apps.pizza.serializers import PizzaSerializer
+from apps.pizza.serializer import PizzaSerializer
 
 
-class PizzaListCreateView(ListCreateAPIView):
+class PizzaListCreateView(ListAPIView):
     serializer_class = PizzaSerializer
+    queryset = PizzaModel.objects.all()
+    filterset_class = PizzaFilter
 
-    def get_queryset(self):
-        request: Request = self.request
-        return filter_pizza(request.query_params)
 
 class PizzaRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     serializer_class = PizzaSerializer

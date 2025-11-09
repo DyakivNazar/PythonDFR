@@ -1,47 +1,28 @@
-from django.db.models import QuerySet
-from django.http import QueryDict
-from rest_framework.exceptions import ValidationError
+from django_filters import rest_framework as filters
 
-from apps.pizza.models import PizzaModel
-from apps.pizza.serializers import PizzaSerializer
+from apps.pizza.models import DaysChoices, PizzaModel
+from apps.pizza.serializer import PizzaSerializer
 
 
-def filter_pizza(query: QueryDict)->QuerySet:
-    qs = PizzaModel.objects.all()
+class PizzaFilter(filters.FilterSet):
+    price_lt = filters.NumberFilter(field_name='price', lookup_expr='lt')
+    price_gt = filters.NumberFilter(field_name='price', lookup_expr='gt')
+    price_lte = filters.NumberFilter(field_name='price', lookup_expr='lte')
+    price_gte = filters.NumberFilter(field_name='price', lookup_expr='gte')
+    size_lt = filters.NumberFilter(field_name='size', lookup_expr='lt')
+    size_gt = filters.NumberFilter(field_name='size', lookup_expr='gt')
+    size_lte = filters.NumberFilter(field_name='size', lookup_expr='lte')
+    size_gte = filters.NumberFilter(field_name='size', lookup_expr='gte')
+    name_start = filters.CharFilter(field_name='name', lookup_expr='startswith')
+    name_contains = filters.CharFilter(field_name='name', lookup_expr='contains')
+    name_end = filters.CharFilter(field_name='name', lookup_expr='endswith')
 
-    for k, v in query.items():
-        match k:
-            case 'price_gt':
-                qs = qs.filter(price__gt=v)
-            case 'price_lt':
-                qs = qs.filter(price__lt=v)
-            case 'price_gte':
-                qs = qs.filter(price__gte=v)
-            case 'price_lte':
-                qs = qs.filter(price__lte=v)
-            case 'size_gt':
-                qs = qs.filter(size__gt=v)
-            case 'size_lt':
-                qs = qs.filter(size__lt=v)
-            case 'size_gte':
-                qs = qs.filter(size__gte=v)
-            case 'size_lte':
-                qs = qs.filter(size__lte=v)
-            case 'name_start':
-                qs = qs.filter(name__startswith=v)
-            case 'name_end':
-                qs = qs.filter(name__endswith=v)
-            case 'name_contains':
-                qs = qs.filter(name__contains=v)
-            case 'order':
-                fields = PizzaSerializer.Meta.fields
-                allowed_fields = (*fields, *[f'-{field}' for field in fields])
+    range = filters.RangeFilter(field_name='size')  # range_min=2&range_max=100
+    price_in = filters.BaseInFilter(field_name='price')  # price_in=30,25,2000
+    # day = filters.ChoiceFilter('day', choices=DaysChoices.choices)
+    order = filters.OrderingFilter(
+        fields=PizzaSerializer.Meta.fields
+    )  # order=name asc
+    # order=-name desc
 
-                if v not in allowed_fields:
-                    raise ValidationError({'detail': f'Only allowed fields: {allowed_fields}'})
-
-                qs = qs.order_by(v)
-            case _:
-                raise ValidationError({'detail': f'"{k}" not allowed'})
-
-    return qs
+# PizzaModel.objects.filter(price__gt=0)
