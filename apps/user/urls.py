@@ -1,9 +1,11 @@
 from django.urls import path
 
-from .views import ToggleUserActiveView, ToggleUserStaffView, UserListCreateView
+from .views import DelUserWithAdminView, AddUserToAdminView, BlockUserView, UnBlockUserView, UserListCreateView
 
 urlpatterns = [
     path('', UserListCreateView.as_view(), name='user_list_create'),
-    path('/<int:pk>/change_active', ToggleUserActiveView.as_view(), name='toggle_active_user'),
-    path('/<int:pk>/change_staff', ToggleUserStaffView.as_view(), name='toggle_staff_user'),
+    path('/<int:pk>/block', BlockUserView.as_view(), name='block_user'),
+    path('/<int:pk>/un_block', UnBlockUserView.as_view(), name='un_block_user'),
+    path('/<int:pk>/add_admin', AddUserToAdminView.as_view(), name='add_admin_user'),
+    path('/<int:pk>/del_admin', DelUserWithAdminView.as_view(), name='del_admin_user'),
 ]

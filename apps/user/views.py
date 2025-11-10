@@ -4,7 +4,7 @@ from rest_framework.generics import ListCreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
-from apps.user.serializers import UserSerializer
+from .serializers import UserSerializer
 
 UserModel = get_user_model()
 
@@ -14,7 +14,7 @@ class UserListCreateView(ListCreateAPIView):
     serializer_class = UserSerializer
 
 
-class ToggleUserActiveView(UpdateAPIView):
+class BlockUserView(UpdateAPIView):
     def get_queryset(self):
         return UserModel.objects.all().exclude(id=self.request.user.id)
 
@@ -22,13 +22,14 @@ class ToggleUserActiveView(UpdateAPIView):
 
     def patch(self, *args, **kwargs):
         user = self.get_object()
-        user.is_active = not user.is_active
-        user.save()
+        if user.is_staff:
+            user.is_staff = False
+            user.save()
         serializer_class = UserSerializer(user)
         return Response(serializer_class.data, status.HTTP_200_OK)
 
 
-class ToggleUserStaffView(UpdateAPIView):
+class UnBlockUserView(UpdateAPIView):
     def get_queryset(self):
         return UserModel.objects.all().exclude(id=self.request.user.id)
 
@@ -36,7 +37,38 @@ class ToggleUserStaffView(UpdateAPIView):
 
     def patch(self, *args, **kwargs):
         user = self.get_object()
-        user.is_staff = not user.is_staff
-        user.save()
+        if not user.is_staff:
+            user.is_staff = True
+            user.save()
+        serializer_class = UserSerializer(user)
+        return Response(serializer_class.data, status.HTTP_200_OK)
+
+
+class AddUserToAdminView(UpdateAPIView):
+    def get_queryset(self):
+        return UserModel.objects.all().exclude(id=self.request.user.id)
+
+    permission_classes = (IsAdminUser,)
+
+    def patch(self, *args, **kwargs):
+        user = self.get_object()
+        if user.is_staff:
+            user.is_staff = True
+            user.save()
+        serializer_class = UserSerializer(user)
+        return Response(serializer_class.data, status.HTTP_200_OK)
+
+
+class DelUserWithAdminView(UpdateAPIView):
+    def get_queryset(self):
+        return UserModel.objects.all().exclude(id=self.request.user.id)
+
+    permission_classes = (IsAdminUser,)
+
+    def patch(self, *args, **kwargs):
+        user = self.get_object()
+        if user.is_staff:
+            user.is_staff = True
+            user.save()
         serializer_class = UserSerializer(user)
         return Response(serializer_class.data, status.HTTP_200_OK)
