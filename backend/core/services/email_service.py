@@ -50,6 +50,7 @@ class EmailService:
     @app.task
     def spam():
         for user in UserModel.objects.all():
+            # name = user.profile.name if hasattr(user, "profile") else user.email   якшо поля такого немає
             EmailService.__send_email(
                 to=user.email,
                 template_name='spam.html',
