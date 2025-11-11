@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
 from core.models import BaseModel
+
 from .managers import UserManager
 
 
@@ -11,7 +12,7 @@ class UserModel(AbstractBaseUser, PermissionsMixin, BaseModel):
         ordering = ('id',)
 
     email = models.EmailField(unique=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'

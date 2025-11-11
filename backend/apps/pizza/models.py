@@ -3,6 +3,7 @@ from django.db import models
 
 from core.enums.regex_enum import RegexEnum
 from core.models import BaseModel
+from core.services.file_service import upload_pizza_photo
 from ..pizza.managers import PizzaManager
 from ..pizza_shop.models import PizzaShopModel
 
@@ -26,5 +27,6 @@ class PizzaModel(BaseModel):
     price = models.IntegerField(validators=[V.MinValueValidator(1), V.MaxValueValidator(100)])
     size = models.IntegerField()
     pizza_shop = models.ForeignKey(PizzaShopModel, on_delete=models.CASCADE, related_name='pizzas')
+    photo = models.ImageField(upload_to=upload_pizza_photo, blank=True)
 
     objects = PizzaManager()

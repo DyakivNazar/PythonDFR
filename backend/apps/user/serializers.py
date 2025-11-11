@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
+from django.db.transaction import atomic
 
 from rest_framework import serializers
+
+from core.services.email_service import EmailService
 
 from .models import ProfileModel
 
@@ -37,15 +40,18 @@ class UserSerializer(serializers.ModelSerializer):
             'updated_at',
             'profile'
         )
-        read_only_fields = ('id', 'is_active','is_staff','is_superuser','last_login','created_at','updated_at')
+        read_only_fields = ('id', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'created_at', 'updated_at')
         extra_kwargs = {
             'password': {
                 'write_only': True,
             }
         }
 
-    def create(self, validated_data:dict):
+    @atomic
+    def create(self, validated_data: dict):
         profile = validated_data.pop('profile')
         user = UserModel.objects.create_user(**validated_data)
         ProfileModel.objects.create(**profile, user=user)
+        EmailService.register(user)
         return user
+

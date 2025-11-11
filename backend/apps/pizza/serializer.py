@@ -21,3 +21,8 @@ class PizzaSerializer(serializers.ModelSerializer):
     #         raise serializers.ValidationError('Price cannot be equal to size')
     #
     #     return attrs
+
+class PizzaPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PizzaModel
+        fields = ('photo',)
