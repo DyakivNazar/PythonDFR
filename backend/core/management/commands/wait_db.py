@@ -1,10 +1,7 @@
 import time
 
-from django.db.backends.mysql.base import DatabaseWrapper
 from django.core.management.base import BaseCommand
 from django.db import OperationalError, connection
-
-connection: DatabaseWrapper = connection
 
 
 class Command(BaseCommand):

@@ -1,11 +1,11 @@
-from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView, ListCreateAPIView
 
 from .filter import PizzaFilter
 from .models import PizzaModel
 from .serializer import PizzaPhotoSerializer, PizzaSerializer
 
 
-class PizzaListCreateView(ListAPIView):
+class PizzaListCreateView(ListCreateAPIView):
     serializer_class = PizzaSerializer
     queryset = PizzaModel.objects.all()
     filterset_class = PizzaFilter

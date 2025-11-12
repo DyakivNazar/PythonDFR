@@ -11,13 +11,28 @@
     "react-dom": "^19.2.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4",
-    "axios": "^1.13.2"
+    "axios": "^1.13.2",
+    "websocket": "^1.0.35",
+    "react-router-dom": "^7.9.5",
+    "react-hook-form": "^7.66.0",
+    "npm-watch": "^0.13.0"
+
+  },
+  "devDependencies": {
+    "@types/websocket": "^1.0.10"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "watch": "npm-watch"
+  },
+  "watch": {
+    "build": {
+      "patterns": ["src"],
+      "exte": "js,css"
+    }
   },
   "eslintConfig": {
     "extends": [
