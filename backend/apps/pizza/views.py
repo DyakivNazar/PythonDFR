@@ -2,9 +2,19 @@ from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, U
 
 from .filter import PizzaFilter
 from .models import PizzaModel
-from .serializer import PizzaPhotoSerializer, PizzaSerializer
+from .serializer import PizzaPhotoSerializer, PizzaSerializer, PizzaResponseSerializer
+from django.utils.decorators import method_decorator
+from drf_yasg.utils import swagger_auto_schema
 
-
+@method_decorator(
+    name='get',
+    decorator=swagger_auto_schema(
+        security=[],
+        operation_description='Hahaha',
+        # responses={200: PizzaResponseSerializer()},
+        operation_summary='get all piizas'
+    )
+)
 class PizzaListCreateView(ListCreateAPIView):
     serializer_class = PizzaSerializer
     queryset = PizzaModel.objects.all()

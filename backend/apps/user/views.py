@@ -22,6 +22,10 @@ class UserListCreateView(ListCreateAPIView):
 
 
 class BlockUserView(UpdateAPIView):
+
+    def get_serializer(self):
+        return None
+
     def get_queryset(self):
         return UserModel.objects.all().exclude(id=self.request.user.id)
 
@@ -37,6 +41,10 @@ class BlockUserView(UpdateAPIView):
 
 
 class UnBlockUserView(UpdateAPIView):
+
+    def get_serializer(self):
+        return None
+
     def get_queryset(self):
         return UserModel.objects.all().exclude(id=self.request.user.id)
 
@@ -52,6 +60,10 @@ class UnBlockUserView(UpdateAPIView):
 
 
 class AddUserToAdminView(UpdateAPIView):
+
+    def get_serializer(self):
+        return None
+
     def get_queryset(self):
         return UserModel.objects.all().exclude(id=self.request.user.id)
 
@@ -67,6 +79,10 @@ class AddUserToAdminView(UpdateAPIView):
 
 
 class DelUserWithAdminView(UpdateAPIView):
+
+    def get_serializer(self):
+        return None
+
     def get_queryset(self):
         return UserModel.objects.all().exclude(id=self.request.user.id)
 
@@ -82,6 +98,10 @@ class DelUserWithAdminView(UpdateAPIView):
 
 
 class SendEmailTestView(GenericAPIView):
+
+    def get_serializer(self):
+        return None
+
     def get(self,*args, **kwargs):
         template = get_template('test_email.html')
         html_content = template.render({'name': 'Django'})

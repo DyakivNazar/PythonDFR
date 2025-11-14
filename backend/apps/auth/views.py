@@ -14,6 +14,10 @@ UserModel = get_user_model()
 
 
 class ActivateUserView(GenericAPIView):
+
+    def get_serializer(self):
+        return None
+
     def patch(self, *args, **kwargs):
         token = kwargs['token']
         user = JWTService.verify_token(token, ActivateToken)
@@ -24,6 +28,10 @@ class ActivateUserView(GenericAPIView):
 
 
 class RecoveryRequestView(GenericAPIView):
+
+    def get_serializer(self):
+        return None
+
     def post(self, *args, **kwargs):
         data = self.request.data
         serializer = EmailSerializer(data=data)
@@ -34,6 +42,10 @@ class RecoveryRequestView(GenericAPIView):
 
 
 class RecoveryPasswordView(GenericAPIView):
+
+    def get_serializer(self):
+        return None
+
     def post(self, *args, **kwargs):
         data = self.request.data
         serializer = PasswordSerializer(data=data)
@@ -47,6 +59,10 @@ class RecoveryPasswordView(GenericAPIView):
 
 
 class SocketTokenView(GenericAPIView):
+
+    def get_serializer(self):
+        return None
+
     permission_classes = (IsAuthenticated,)
     def get(self, *args, **kwargs):
         token = JWTService.create_token(self.request.user, SocketToken)
