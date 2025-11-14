@@ -6,7 +6,8 @@ const pizzas = '/pizzas'
 const urls = {
     auth: {
         login: auth,
-        socket: `${auth}/socket`
+        socket: `${auth}/socket`,
+        refresh: `${auth}/refresh`
     },
     pizzas
 }
