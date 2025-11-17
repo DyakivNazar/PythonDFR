@@ -24,9 +24,9 @@ class PizzaModel(BaseModel):
         ordering = ('id',)
 
     name = models.CharField(max_length=20, validators=[V.RegexValidator(RegexEnum.NAME.pattern, RegexEnum.NAME.msg)])
-    price = models.IntegerField(validators=[V.MinValueValidator(1), V.MaxValueValidator(100)])
-    size = models.IntegerField()
-    pizza_shop = models.ForeignKey(PizzaShopModel, on_delete=models.CASCADE, related_name='pizzas')
+    price = models.IntegerField()
+    size = models.IntegerField(validators=[V.MinValueValidator(1), V.MaxValueValidator(100)])
+    pizza_shop = models.ForeignKey(PizzaShopModel, on_delete=models.CASCADE, null=True, blank=True, related_name='pizzas')
     photo = models.ImageField(upload_to=upload_pizza_photo, blank=True)
 
     objects = PizzaManager()

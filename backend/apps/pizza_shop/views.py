@@ -6,7 +6,8 @@ from ..pizza.serializer import PizzaSerializer
 from .filter import PizzaShopFilter
 from .models import PizzaShopModel
 from .serializer import PizzaShopSerializer
-
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 class PizzaShopListCreateView(ListCreateAPIView):
     """
@@ -18,6 +19,7 @@ class PizzaShopListCreateView(ListCreateAPIView):
     serializer_class = PizzaShopSerializer
     queryset = PizzaShopModel.objects.all().distinct()
     filterset_class = PizzaShopFilter
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
 
 
 class PizzaShopAddPizzaView(GenericAPIView):
