@@ -1,6 +1,7 @@
 from django_filters import rest_framework as filters
 
 from .models import PizzaShopModel
+from .serializer import PizzaShopSerializer
 
 
 class PizzaShopFilter(filters.FilterSet):
@@ -15,14 +16,23 @@ class PizzaShopFilter(filters.FilterSet):
     size_lte = filters.NumberFilter(field_name='pizzas__size', lookup_expr='lte')
     size_gte = filters.NumberFilter(field_name='pizzas__size', lookup_expr='gte')
 
-    pizza_name = filters.CharFilter(field_name='pizzas__name', lookup_expr='icontains')
+    name_start = filters.CharFilter(field_name='name', lookup_expr='startswith')
+    name_contains = filters.CharFilter(field_name='name', lookup_expr='contains')
+    name_end = filters.CharFilter(field_name='name', lookup_expr='endswith')
+
+    pizza_name_start = filters.CharFilter(field_name='pizzas__name', lookup_expr='startswith')
+    pizza_name_contains = filters.CharFilter(field_name='pizzas__name', lookup_expr='contains')
+    pizza_name_end = filters.CharFilter(field_name='pizzas__name', lookup_expr='endswith')
 
     order = filters.OrderingFilter(
+        fields=PizzaShopSerializer.Meta.fields,
+    )
+
+    order_pizzas = filters.OrderingFilter(
         fields=(
-            ('id', 'id'),
-            ('name', 'name'),
-            ('pizzas__price', 'pizza_price'),
-            ('pizzas__size', 'pizza_size'),
+            ('pizzas__price', 'price'),
+            ('pizzas__size', 'size'),
+            ('pizzas__name', 'name'),
         )
     )
 
@@ -31,4 +41,4 @@ class PizzaShopFilter(filters.FilterSet):
         # якщо хочеш щоб документація/forms бачила поля:
         fields = ['price_lt', 'price_gt', 'price_lte', 'price_gte',
                   'size_lt', 'size_gt', 'size_lte', 'size_gte',
-                  'pizza_name']
+                  'pizza_name_start', 'pizza_name_contains', 'pizza_name_end']

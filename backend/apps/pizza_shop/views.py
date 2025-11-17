@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListCreateAPIView
 from rest_framework.response import Response
 
+from ..pizza.filter import PizzaFilter
 from ..pizza.serializer import PizzaSerializer
 from .filter import PizzaShopFilter
 from .models import PizzaShopModel
@@ -18,6 +19,7 @@ class PizzaShopListCreateView(ListCreateAPIView):
     """
     serializer_class = PizzaShopSerializer
     queryset = PizzaShopModel.objects.all().distinct()
+    # filterset_class = PizzaFilter
     filterset_class = PizzaShopFilter
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
 
